@@ -4,6 +4,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { toast } from "sonner";
+import { FiFileText } from "react-icons/fi";
 
 export default function AssignedTasks() {
   const [tasks, setTasks] = useState<any[]>([]);
@@ -21,7 +22,8 @@ export default function AssignedTasks() {
 
       const { data, error } = await supabase
         .from("tasks")
-        .select("*")
+        .select(`*,
+        task_files (*)`)
         .eq("assigned_to", user.id)
         .order("created_at", { ascending: false });
 
@@ -31,10 +33,18 @@ export default function AssignedTasks() {
       }
 
       setTasks(data || []);
+      console.log(data);
+
     };
 
     fetchTasks();
   }, []);
+
+  const handleStatusChange = (taskId:string, value:string) => {
+  setTasks(tasks.map(t =>
+    t.id === taskId ? { ...t, status: value } : t
+  ));
+};
 
   const updateStatus = async (taskId: string, status: string) => {
     const { error } = await supabase
@@ -78,25 +88,21 @@ export default function AssignedTasks() {
               </CardHeader>
 
               <CardContent className="space-y-3">
-                {/* Description */}
                 <p className="text-sm text-[#2c6c66]">
                   {task.description || "No description"}
                 </p>
 
-                {/* Code */}
                 <p className="text-xs text-[#408c84]">
                   Code: {task.task_code}
                 </p>
 
-                {/* Status */}
                 <div>
                   <p className="text-sm mb-1 text-[#1e4945]">Status</p>
                   <Select
-                    defaultValue={task.status}
-                    onValueChange={(value) =>
-                      updateStatus(task.id, value)
-                    }
-                  >
+  value={task.status}
+  onValueChange={(value) => handleStatusChange(task.id, value)}
+>
+                  
                     <SelectTrigger>
                       <SelectValue />
                     </SelectTrigger>
@@ -112,13 +118,32 @@ export default function AssignedTasks() {
                   </Select>
                 </div>
 
-                {/* Dates */}
                 <div className="text-xs text-[#408c84] space-y-1">
-                  <p>Created: {task.created_at}</p>
-                  {task.due_date && <p>Due: {task.due_date}</p>}
+                  <p>Created: {new Date(task.created_at).toLocaleDateString([],)}</p>
+                
                 </div>
 
-                {/* Quick Update Button */}
+                <div>
+                  <p className="text-sm text-[#1e4945] mb-1">Attachments</p>
+
+                  {task.task_files && task.task_files.length > 0 ? (
+                    <div className="flex flex-col gap-2">
+                      {task.task_files.map((file: any) => (
+                        <a
+                          key={file.id}
+                          href={file.file_url}
+                          target="_blank"
+                          className="text-blue-600 text-xs underline flex items-center"
+                        >
+                           <FiFileText /><span>{file.file_name}</span>
+                        </a>
+                      ))}
+                    </div>
+                  ) : (
+                    <p className="text-xs text-gray-400">No attachments</p>
+                  )}
+                </div>
+
                 <Button
                   className="w-full mt-2 bg-[#42857f] hover:bg-[#5b9b96] text-white"
                   onClick={() =>

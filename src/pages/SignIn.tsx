@@ -188,7 +188,7 @@ export default function SignIn() {
             className="text-sm text-center text-gray-500 cursor-pointer"
             onClick={() => navigate("/signup")}
           >
-            Don’t have an account?<span className="text-slate-800 hover:text-black hover:font-semibold ms-1">Sign up</span> 
+            Don't have an account?<span className="text-slate-800 hover:text-black hover:font-semibold ms-1">Sign up</span> 
           </p>
         </CardContent>
       </Card>

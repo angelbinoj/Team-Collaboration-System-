@@ -42,7 +42,7 @@ export function CompleteProfile() {
 
     setUploading(true);
 
-    const filePath = `avatar-${Date.now()}-${file.name}`;
+    const filePath = `avatar-${Date.now()}-${crypto.randomUUID()}`;
 
     const { data, error } = await supabase.storage
       .from("avatars")

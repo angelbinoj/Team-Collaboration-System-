@@ -44,7 +44,7 @@ export function UpdateProfile() {
 
     setUploading(true);
 
-    const filePath = `avatar-${Date.now()}-${file.name}`;
+    const filePath = `avatar-${Date.now()}-${crypto.randomUUID()}`;
 
     const { data, error } = await supabase.storage
       .from("avatars")
@@ -86,7 +86,7 @@ export function UpdateProfile() {
   };
 
   return (
-  <div className="h-screen flex items-center justify-center bg-[#F7F9FA]">
+  <div className="min-h-screen flex items-center justify-center bg-[#F7F9FA]">
     <Card className="w-1/3 bg-white border border-[#E5E7EB] shadow-md">
       
       <CardHeader>

@@ -9,7 +9,6 @@ import { supabase } from "./lib/supabase"
 import { useEffect, useState } from "react"
 import type { User } from "@supabase/supabase-js"
 import { Toaster } from "sonner"
-import ViewTaskList from "./pages/ViewTaskList"
 import { CompleteProfile } from "./components/CompleteProfile"
 import { UpdateProfile } from "./components/UpdatePofile"
 import MainLayout from "./layout/MainLayout"
@@ -17,6 +16,7 @@ import Projects from "./pages/Projects"
 import ProjectDetails from "./pages/ProjectDetails"
 import AssignedTasks from "./pages/AssignedTasks"
 import ChatPage from "./pages/ChatPage"
+import Dashboard from "./pages/Dashboard"
 // import ListCompletedTasks from "./pages/CompletedTask"
 // import Messages from "./components/Messages"
 // import UsersList from "./pages/UserList"
@@ -54,7 +54,7 @@ function App() {
     <>
       <Routes>
         <Route path='/' element={<MainLayout />} >
-        <Route index element={user ? <ViewTaskList/> : <Navigate to="/signIn" />}/>
+        <Route index element={user ? <Dashboard/> : <Navigate to="/signIn" />}/>
         <Route path='/projects' element={user ? <Projects/> : <Navigate to="/signIn" />}/>
         <Route path='/tasks' element={user ? <AssignedTasks/> : <Navigate to="/signIn" />}/>
         <Route path='/chat' element={user ? <ChatPage/> : <Navigate to="/signIn" />}/>

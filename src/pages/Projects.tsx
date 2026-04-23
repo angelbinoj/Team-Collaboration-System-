@@ -71,14 +71,14 @@ export default function Projects() {
   return (
     <div className="min-h-screen bg-[#F7F9FA] p-6 space-y-6">
 
-      {/* Header */}
+
       <div className="flex justify-between items-center">
         <h1 className="text-2xl font-semibold text-[#1e4945]">
           Projects
         </h1>
       </div>
 
-      {/* Create Project */}
+
       <Card className="bg-white border border-[#E5E7EB] shadow-sm">
         <CardContent className="p-4 space-y-4">
           <h2 className="text-lg font-medium text-[#1e4945]">
@@ -140,7 +140,6 @@ export default function Projects() {
         </CardContent>
       </Card>
 
-      {/* Project List */}
       {projects.length === 0 ? (
         <div className="text-center py-16 border border-[#E5E7EB] rounded-lg bg-[#EEF3F3]">
           <p className="text-[#6B7280] text-lg">No projects yet</p>
@@ -158,22 +157,18 @@ export default function Projects() {
             >
               <CardContent className="p-4 space-y-2">
 
-                {/* Project Code */}
                 <p className="text-xs text-[#6FA8A3] font-medium">
                   {p.project_code}
                 </p>
 
-                {/* Name */}
                 <h3 className="font-semibold text-lg text-[#1F2937]">
                   {p.name}
                 </h3>
 
-                {/* Description */}
                 <p className="text-sm text-[#6B7280] overflow-hidden text-ellipsis whitespace-nowrap">
                   {p.description || "No description"}
                 </p>
 
-                {/* Dates */}
                 <div className="text-xs text-[#9CA3AF]">
                   {p.start_date} → {p.end_date}
                 </div>

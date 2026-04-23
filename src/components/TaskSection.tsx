@@ -5,6 +5,7 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import UpdateTaskList from "./UpdateTaskList";
+import { FiFileText } from "react-icons/fi";
 
 type Props = {
   projectId: string;
@@ -23,7 +24,28 @@ export default function TaskSection({
   const [description, setDescription] = useState("");
   const [assignedTo, setAssignedTo] = useState("");
   const [status, setStatus] = useState("To Do");
-  // ✅ Create task
+
+    useEffect(() => {
+    const fetchTasks = async () => {
+      const { data, error } = await supabase
+        .from("tasks")
+        .select(`
+        *,
+        task_files (*)
+      `)
+        .eq("project_id", projectId);
+
+      if (error) {
+        console.log(error);
+        return;
+      }
+      console.log(data);
+      
+    };
+
+    fetchTasks();
+  }, [projectId]);
+
   const handleCreate = async () => {
     if (!title) return alert("Title required");
 
@@ -35,7 +57,7 @@ export default function TaskSection({
       p: projectId,
       a: assignedTo || null,
       c: user?.id,
-      s:status
+      s: status
     });
 
     if (error) {
@@ -43,7 +65,6 @@ export default function TaskSection({
       return;
     }
 
-    // 🔥 Get latest task (simple approach)
     const { data: newTask } = await supabase
       .from("tasks")
       .select("id")
@@ -57,29 +78,10 @@ export default function TaskSection({
     refresh();
   };
 
-useEffect(() => {
-  const fetchTasks = async () => {
-    const { data, error } = await supabase
-      .from("tasks")
-      .select(`
-        *,
-        task_files (*)
-      `)
-      .eq("project_id", projectId);
-
-    if (error) {
-      console.log(error);
-      return;
-    }
-  };
-
-  fetchTasks();
-}, [projectId]);
 
   return (
     <div className="space-y-6">
 
-      {/* 🔹 Create Task */}
       <Card className="bg-white border border-[#E5E7EB]">
         <CardContent className="p-4 space-y-4">
 
@@ -135,7 +137,6 @@ useEffect(() => {
         </CardContent>
       </Card>
 
-      {/* 🔹 Task List */}
       {tasks.length === 0 ? (
         <div className="text-center py-10 bg-[#EEF3F3] border rounded-lg">
           No tasks yet
@@ -162,36 +163,31 @@ useEffect(() => {
                   {task.status}
                 </p>
 
-                <div className="mt-4 space-y-2">
-            <h3 className="text-white font-semibold">Attachments</h3>
-
-            {task.task_files?.length === 0 && (
-              <p className="text-slate-200 italic text-sm">No attachments</p>
-            )}
-           {task.task_files?.map((file: any) => (
-              <div key={file.id}>
-                {file.file_name.endsWith(".pdf") ? (
-                  <a
-                    href={file.file_url}
-                    target="_blank"
-                    className="text-yellow-300 underline"
-                  >
-                    📄 {file.file_name}
-                  </a>
-                ) : (
-                  <img
-                    src={file.file_url}
-                    alt="attachment"
-                    className="w-32 rounded"
-                  />
-                )}
-              </div>
-            ))}
-          </div>
+                 <div>
+                                  <p className="text-sm text-[#1e4945] mb-1">Attachments</p>
+                
+                                  {task.task_files && task.task_files.length > 0 ? (
+                                    <div className="flex flex-col gap-2">
+                                      {task.task_files.map((file: any) => (
+                                        <a
+                                          key={file.id}
+                                          href={file.file_url}
+                                          target="_blank"
+                                          rel="noopener noreferrer"
+                                          className="text-blue-600 text-xs underline flex items-center"
+                                        >
+                                           <FiFileText /><span>{file.file_name}</span>
+                                        </a>
+                                      ))}
+                                    </div>
+                                  ) : (
+                                    <p className="text-xs text-gray-400">No attachments</p>
+                                  )}
+                                </div>
 
                 <div className="flex gap-2 pt-2">
 
-                  <UpdateTaskList task={task}  refresh={refresh} />
+                  <UpdateTaskList task={task} users={users} refresh={refresh} />
 
                   <Button
                     onClick={async () => {

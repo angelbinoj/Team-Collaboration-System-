@@ -3,6 +3,7 @@ import { supabase } from "@/lib/supabase";
 import { Card } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
+import avatar from "@/assets/avatar.jpg";
 
 export default function ChatPage() {
   const [users, setUsers] = useState<any[]>([]);
@@ -119,63 +120,95 @@ console.log(session);
 
 
   return (
-    <div className="flex h-screen">
+  <div className="flex h-full">
 
-      {/* LEFT: USERS */}
-      <div className="w-1/3 border-r p-4 overflow-y-auto">
-        <h2 className="font-bold mb-4">Users</h2>
+    <div className="w-1/3 bg-white border-r flex flex-col">
 
+      <div className="p-4 border-b">
+        <h2 className="font-semibold text-[#1e4945]">Users</h2>
+      </div>
+
+      <div className="flex-1 overflow-y-auto p-3 space-y-2">
         {users.map((user) => (
-          <Card
+          <div
             key={user.id}
             onClick={() => setSelectedUser(user)}
-            className={`p-3 mb-2 cursor-pointer ${
-              selectedUser?.id === user.id ? "bg-gray-200" : ""
-            }`}
+            className={`p-3 rounded-md cursor-pointer border-b text-sm flex items-center gap-2
+              ${selectedUser?.id === user.id
+                ? "bg-[#E6F2F1] text-[#1e4945]"
+                : "hover:bg-[#F0F4F4] text-[#2c6c66]"
+              }`}
           >
-            {user.name}
-          </Card>
+             <img
+            src={user?.avatar_url || avatar}
+            className="w-10 h-10 border-2 border-white rounded-full"
+          />
+          <span>{user.name}</span>
+          </div>
         ))}
       </div>
-
-      <div className="flex-1 flex flex-col p-4">
-
-        {!selectedUser ? (
-          <p className="text-gray-500">
-            Select a user to start chatting
-          </p>
-        ) : (
-          <>
-            <h2 className="font-bold mb-2">
-              Chat with {selectedUser.name}
-            </h2>
-
-            <div className="flex-1 overflow-y-auto space-y-2 border p-3 rounded">
-              {messages.map((msg, i) => (
-                <div
-                  key={i}
-                  className={`p-2 rounded w-fit max-w-xs ${
-                    msg.sender_id === currentUser.id
-                      ? "ml-auto bg-blue-500 text-white"
-                      : "bg-gray-200"
-                  }`}
-                >
-                  {msg.message}
-                </div>
-              ))}
-            </div>
-
-            <div className="flex gap-2 mt-3">
-              <Input
-                value={message}
-                onChange={(e) => setMessage(e.target.value)}
-                placeholder="Type message..."
-              />
-              <Button onClick={sendMessage}>Send</Button>
-            </div>
-          </>
-        )}
-      </div>
     </div>
-  );
+
+    <div className="flex-1 flex flex-col bg-[#F7F9FA]">
+
+      {!selectedUser ? (
+        <div className="flex-1 flex items-center justify-center text-gray-400">
+          Select a user to start chatting
+        </div>
+      ) : (
+        <>
+
+          <div className="p-4 border-b bg-white font-medium text-[#1e4945] flex gap-2 items-center">
+             <img
+            src={selectedUser?.avatar_url || avatar}
+            className="w-10 h-10 border-2 rounded-full"
+          />
+          <span>
+
+          {selectedUser.name}
+          </span>
+          </div>
+
+
+          <div className="flex-1 overflow-y-auto p-4 space-y-2">
+
+            {messages.map((msg, i) => (
+              <div
+                key={i}
+                className={`px-3 py-2 rounded-lg max-w-xs text-sm
+                  ${msg.sender_id === currentUser.id
+                    ? "ml-auto bg-[#6FA8A3] text-white"
+                    : "bg-white border text-[#2c6c66]"
+                  }`}
+              >
+                {msg.message}
+                <div className="text-[10px] opacity-60 mt-1">
+                  {new Date(msg.created_at).toLocaleTimeString([], {
+                    hour: "2-digit",
+                    minute: "2-digit",
+                  })}
+                </div>
+              </div>
+            ))}
+
+          </div>
+
+          <div className="p-3 border-t bg-white flex gap-2">
+            <Input
+              value={message}
+              onChange={(e) => setMessage(e.target.value)}
+              placeholder="Type message..."
+            />
+            <Button
+              onClick={sendMessage}
+              className="bg-[#6FA8A3] text-white hover:bg-[#5b9b96]"
+            >
+              Send
+            </Button>
+          </div>
+        </>
+      )}
+    </div>
+  </div>
+);
 }
