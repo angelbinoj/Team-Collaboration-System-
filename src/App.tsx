@@ -13,6 +13,10 @@ import ViewTaskList from "./pages/ViewTaskList"
 import { CompleteProfile } from "./components/CompleteProfile"
 import { UpdateProfile } from "./components/UpdatePofile"
 import MainLayout from "./layout/MainLayout"
+import Projects from "./pages/Projects"
+import ProjectDetails from "./pages/ProjectDetails"
+import AssignedTasks from "./pages/AssignedTasks"
+import ChatPage from "./pages/ChatPage"
 // import ListCompletedTasks from "./pages/CompletedTask"
 // import Messages from "./components/Messages"
 // import UsersList from "./pages/UserList"
@@ -51,8 +55,11 @@ function App() {
       <Routes>
         <Route path='/' element={<MainLayout />} >
         <Route index element={user ? <ViewTaskList/> : <Navigate to="/signIn" />}/>
+        <Route path='/projects' element={user ? <Projects/> : <Navigate to="/signIn" />}/>
+        <Route path='/tasks' element={user ? <AssignedTasks/> : <Navigate to="/signIn" />}/>
+        <Route path='/chat' element={user ? <ChatPage/> : <Navigate to="/signIn" />}/>
+        <Route path='/projects/:id' element={user ? <ProjectDetails/> : <Navigate to="/signIn" />}/>
         {/* <Route path='/cmpltd' index element={user ? <ListCompletedTasks/> : <Navigate to="/signIn" />}/>
-        <Route path='/users' index element={user ? <UsersList/> : <Navigate to="/signIn" />}/>
         <Route path='/update' index element={user ? <UpdateProfile/> : <Navigate to="/signIn" />}/>
         <Route path='message/:id' index element={user ? <Messages/> : <Navigate to="/signIn" />}/>
         <Route path='add' element={user ? <AddTask /> : <Navigate to="/signIn" />} />

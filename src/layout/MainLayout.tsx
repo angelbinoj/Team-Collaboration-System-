@@ -1,7 +1,28 @@
-import { Outlet } from "react-router-dom";
+import { Outlet, useNavigate } from "react-router-dom";
 import avatar from "@/assets/avatar.jpg";
+import { supabase } from "@/lib/supabase";
+import { toast } from "sonner";
+import { Button } from "@/components/ui/button";
+import { BsChat } from "react-icons/bs";
+
 
 export default function MainLayout() {
+  const navigate=useNavigate();
+
+   const logout = async () => {
+    try {
+
+      let { error } = await supabase.auth.signOut()
+      console.log(error);
+      toast.success("Logout successfully",{
+    className: "text-green-600",
+  });
+      navigate('/signIn')
+
+    } catch (error) {
+      console.log("Error logout", error);
+    }
+  }
   return (
     <div className="flex h-screen overflow-hidden">
 
@@ -9,9 +30,9 @@ export default function MainLayout() {
         <h1 className="text-xl font-bold mb-6">TaskApp</h1>
 
         <nav className="flex flex-col gap-3">
-          <a href="/dashboard">Dashboard</a>
+          <a href="/">Dashboard</a>
           <a href="/projects">Projects</a>
-          <a href="/chat">Chat</a>
+          <a href="/tasks">My Tasks</a>
         </nav>
       </div>
 
@@ -22,11 +43,13 @@ export default function MainLayout() {
           <span className="font-semibold">Dashboard</span>
 
           <div className="flex items-center gap-2">
+            <BsChat className="w-8 h-8 text-black hover:text-slate-600" onClick={()=>navigate('/chat')}/>
             <img
               src={avatar}
               className="w-8 h-8 rounded-full"
             />
-            <span className="text-sm">User</span>
+            <span onClick={()=>navigate('/update-profile')} className="text-sm">User</span>
+<Button onClick={()=>logout()} className="bg-red-400 hover:bg-red-500">Logout</Button>
           </div>
         </div>
 
