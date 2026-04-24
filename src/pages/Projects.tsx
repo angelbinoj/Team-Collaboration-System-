@@ -15,9 +15,12 @@ export default function Projects() {
   const [desc, setDesc] = useState("");
   const [startDate, setStartDate] = useState("");
   const [endDate, setEndDate] = useState("");
+   const [loading, setLoading] = useState(true);
   const navigate = useNavigate();
   
-  const fetchProjects = async () => {    
+  const fetchProjects = async () => { 
+    try {
+      setLoading(true); 
       const { data: { user } } = await supabase.auth.getUser();
       
       const { data } = await supabase
@@ -28,6 +31,10 @@ export default function Projects() {
       
       setUser(user);
     setProjects(data || []);
+    setLoading(false);
+    } catch (error) {
+      console.log(error);   
+    }  
   };
 
   useEffect(() => {
@@ -35,7 +42,8 @@ export default function Projects() {
   }, []);
 
   const handleCreate = async () => {
-    if (!name || !startDate || !endDate) {
+    try {
+          if (!name || !startDate || !endDate) {
       alert("Fill all required fields");
       return;
     }
@@ -44,7 +52,6 @@ export default function Projects() {
       alert("End date cannot be before start date");
       return;
     }
-
 
     const { error } = await supabase.rpc("create_project", {
       n: name,
@@ -66,18 +73,30 @@ export default function Projects() {
     setEndDate("");
 
     fetchProjects();
+    } catch (error) {
+      console.log(error);
+      
+    }
+
   };
+
+  if (loading) {
+    return (
+      <div className="flex justify-center items-center gap-1 min-h-screen">
+        <p className="text-teal-500 font-semibold text-lg">Fetching projects...</p>
+        <div className="w-8 h-8 border-4 border-teal-500 border-t-transparent rounded-full animate-spin"></div>
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen bg-[#F7F9FA] p-6 space-y-6">
-
 
       <div className="flex justify-between items-center">
         <h1 className="text-2xl font-semibold text-[#1e4945]">
           Projects
         </h1>
       </div>
-
 
       <Card className="bg-white border border-[#E5E7EB] shadow-sm">
         <CardContent className="p-4 space-y-4">

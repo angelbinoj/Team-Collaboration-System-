@@ -9,45 +9,53 @@ import { FiFileText } from "react-icons/fi";
 export default function AssignedTasks() {
   const [tasks, setTasks] = useState<any[]>([]);
   const [userId, setUserId] = useState<string>("");
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const fetchTasks = async () => {
-      const {
-        data: { user },
-      } = await supabase.auth.getUser();
+      try {
+        setLoading(true);
+        const {
+          data: { user },
+        } = await supabase.auth.getUser();
 
-      if (!user) return;
+        if (!user) return;
 
-      setUserId(user.id);
+        setUserId(user.id);
 
-      const { data, error } = await supabase
-        .from("tasks")
-        .select(`*,
+        const { data, error } = await supabase
+          .from("tasks")
+          .select(`*,
         task_files (*)`)
-        .eq("assigned_to", user.id)
-        .order("created_at", { ascending: false });
+          .eq("assigned_to", user.id)
+          .order("created_at", { ascending: false });
 
-      if (error) {
+        if (error) {
+          console.log(error);
+          return;
+        }
+
+        setTasks(data || []);
+        setLoading(false);
+        console.log(data);
+      } catch (error) {
         console.log(error);
-        return;
+
       }
-
-      setTasks(data || []);
-      console.log(data);
-
     };
 
     fetchTasks();
   }, []);
 
-  const handleStatusChange = (taskId:string, value:string) => {
-  setTasks(tasks.map(t =>
-    t.id === taskId ? { ...t, status: value } : t
-  ));
-};
+  const handleStatusChange = (taskId: string, value: string) => {
+    setTasks(tasks.map(t =>
+      t.id === taskId ? { ...t, status: value } : t
+    ));
+  };
 
   const updateStatus = async (taskId: string, status: string) => {
-    const { error } = await supabase
+    try {
+      const { error } = await supabase
       .from("tasks")
       .update({ status })
       .eq("id", taskId);
@@ -64,7 +72,21 @@ export default function AssignedTasks() {
         t.id === taskId ? { ...t, status } : t
       )
     );
+    } catch (error) {
+      console.log(error);
+      
+    }
+    
   };
+
+  if (loading) {
+    return (
+      <div className="flex justify-center items-center gap-1 min-h-screen">
+        <p className="text-teal-500 font-semibold text-lg">Fetching tasks...</p>
+        <div className="w-8 h-8 border-4 border-teal-500 border-t-transparent rounded-full animate-spin"></div>
+      </div>
+    );
+  }
 
   return (
     <div className="p-6 space-y-6 bg-[#F7F9FA]">
@@ -99,10 +121,10 @@ export default function AssignedTasks() {
                 <div>
                   <p className="text-sm mb-1 text-[#1e4945]">Status</p>
                   <Select
-  value={task.status}
-  onValueChange={(value) => handleStatusChange(task.id, value)}
->
-                  
+                    value={task.status}
+                    onValueChange={(value) => handleStatusChange(task.id, value)}
+                  >
+
                     <SelectTrigger>
                       <SelectValue />
                     </SelectTrigger>
@@ -120,7 +142,7 @@ export default function AssignedTasks() {
 
                 <div className="text-xs text-[#408c84] space-y-1">
                   <p>Created: {new Date(task.created_at).toLocaleDateString([],)}</p>
-                
+
                 </div>
 
                 <div>
@@ -135,7 +157,7 @@ export default function AssignedTasks() {
                           target="_blank"
                           className="text-blue-600 text-xs underline flex items-center"
                         >
-                           <FiFileText /><span>{file.file_name}</span>
+                          <FiFileText /><span>{file.file_name}</span>
                         </a>
                       ))}
                     </div>

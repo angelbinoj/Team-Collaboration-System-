@@ -21,7 +21,9 @@ export function UpdateProfile() {
 
   useEffect(() => {
     const fetchUser = async () => {
-      const { data: { user } } = await supabase.auth.getUser();
+
+      try {
+        const { data: { user } } = await supabase.auth.getUser();
 
                 const { data ,error} = await supabase
                     .from("profiles")
@@ -34,12 +36,19 @@ export function UpdateProfile() {
                 setPhone(data?.phone_no || "");
       setLocation(data?.location || "");
       setAvatarUrl(data?.avatar_url || "");
+
+      } catch (error) {
+        console.log(error);       
+      }
+      
     };
     fetchUser();  
   },[]);
 
   const handleUpload = async (e: any) => {
-    const file = e.target.files[0];
+
+    try {
+        const file = e.target.files[0];
     if (!file) return;
 
     setUploading(true);
@@ -62,12 +71,19 @@ export function UpdateProfile() {
 
     setAvatarUrl(publicUrl.publicUrl);
     setUploading(false);
+
+    } catch (error) {
+      console.log(error);
+      
+    }
+  
   };
 
   const handleSave = async () => {
     if (!user) return;
 
-    const { error } = await supabase
+    try {
+          const { error } = await supabase
       .from("profiles")
       .update({
         phone_no: phone,
@@ -80,9 +96,14 @@ export function UpdateProfile() {
       toast.error(error.message);
       return;
     }
-
     toast.success("Profile updated successfully");
     navigate("/");
+
+    } catch (error) {
+      console.log(error);
+      
+    }
+
   };
 
   return (

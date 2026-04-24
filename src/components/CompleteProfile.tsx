@@ -1,4 +1,4 @@
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { supabase } from "@/lib/supabase";
 import { toast } from "sonner";
@@ -19,9 +19,12 @@ export function CompleteProfile() {
   const [avatarUrl, setAvatarUrl] = useState("");
   const [uploading, setUploading] = useState(false);
 
-  useState(() => {
+  useEffect(() => {
+
     const fetchUser = async () => {
-      const { data: { user } } = await supabase.auth.getUser();
+
+      try {
+        const { data: { user } } = await supabase.auth.getUser();
 
                 const { data ,error} = await supabase
                     .from("profiles")
@@ -30,14 +33,20 @@ export function CompleteProfile() {
                     .single()
 
                 setUser(data || "");
-                console.log(error);
+                console.log('error fetching user',error);
+      } catch (error) {
+        console.log(error);
+        
+      }
                 
     };
     fetchUser();
   });
 
   const handleUpload = async (e: any) => {
-    const file = e.target.files[0];
+
+    try {
+       const file = e.target.files[0];
     if (!file) return;
 
     setUploading(true);
@@ -60,12 +69,18 @@ export function CompleteProfile() {
 
     setAvatarUrl(publicUrl.publicUrl);
     setUploading(false);
+      
+    } catch (error) {
+      console.log(error);
+      
+    }
   };
 
   const handleSave = async () => {
     if (!user) return;
 
-    const { error } = await supabase
+    try {
+      const { error } = await supabase
       .from("profiles")
       .update({
         phone_no: phone,
@@ -81,6 +96,11 @@ export function CompleteProfile() {
 
     toast.success("Profile updated successfully");
     navigate("/");
+    } catch (error) {
+      console.log(error);
+      
+    }
+
   };
 
   return (

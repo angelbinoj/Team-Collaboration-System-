@@ -6,6 +6,7 @@ import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import UpdateTaskList from "./UpdateTaskList";
 import { FiFileText } from "react-icons/fi";
+import { toast } from "sonner";
 
 type Props = {
   projectId: string;
@@ -27,7 +28,8 @@ export default function TaskSection({
 
     useEffect(() => {
     const fetchTasks = async () => {
-      const { data, error } = await supabase
+      try {
+        const { data, error } = await supabase
         .from("tasks")
         .select(`
         *,
@@ -40,16 +42,24 @@ export default function TaskSection({
         return;
       }
       console.log(data);
-      
+      } catch (error) {
+        console.log(error);
+        
+      }
     };
 
     fetchTasks();
   }, [projectId]);
 
   const handleCreate = async () => {
-    if (!title) return alert("Title required");
 
-    const { data: { user } } = await supabase.auth.getUser();
+    try {
+      const { data: { user } } = await supabase.auth.getUser();
+
+      if (!title || !description || !assignedTo) {
+      toast.error("All required fields must be filled");
+      return;
+    }
 
     const { error } = await supabase.rpc("create_task", {
       t: title,
@@ -61,10 +71,9 @@ export default function TaskSection({
     });
 
     if (error) {
-      console.log(error);
+      toast.error(error.message);
       return;
     }
-
     const { data: newTask } = await supabase
       .from("tasks")
       .select("id")
@@ -76,6 +85,12 @@ export default function TaskSection({
     setStatus("To Do");
 
     refresh();
+
+    } catch (error) {
+      console.log(error);
+      
+    }
+    
   };
 
 

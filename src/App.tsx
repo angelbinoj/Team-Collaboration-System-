@@ -1,8 +1,6 @@
 
 import { Navigate, Route, Routes } from "react-router-dom"
 
-// import AddTask from "./pages/AddTask"
-// import ViewTask from "./pages/ViewTask"
 import SignUp from "./pages/SignUp"
 import SignIn from "./pages/SignIn"
 import { supabase } from "./lib/supabase"
@@ -17,10 +15,7 @@ import ProjectDetails from "./pages/ProjectDetails"
 import AssignedTasks from "./pages/AssignedTasks"
 import ChatPage from "./pages/ChatPage"
 import Dashboard from "./pages/Dashboard"
-// import ListCompletedTasks from "./pages/CompletedTask"
-// import Messages from "./components/Messages"
-// import UsersList from "./pages/UserList"
-// import UpdateProfile from "./components/UpdateProfile"
+
 
 function App() {
 
@@ -48,7 +43,14 @@ function App() {
     
   }, []);
 
-  if (loading) return <p>Loading...</p>;
+    if (loading) {
+    return (
+      <div className="flex justify-center items-center gap-1 min-h-screen">
+        <p className="text-teal-500 font-semibold text-lg">Loading...</p>
+        <div className="w-8 h-8 border-4 border-teal-500 border-t-transparent rounded-full animate-spin"></div>
+      </div>
+    );
+  }
 
   return (
     <>

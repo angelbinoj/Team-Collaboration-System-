@@ -44,60 +44,64 @@ export default function UpdateTaskList({ task, users, refresh }: Props) {
   };
 
   const handleUpdate = async () => {
-    if (!title) {
-      toast.error("Title required");
-      return;
-    }
-    console.log(assignedTo);
-
-
-    // ✅ Update task
-    const { data, error } = await supabase.rpc("update_tasks", {
-      tid: task.id,
-      t: title,
-      d: description,
-      s: status,
-      a: assignedTo
-    });
-
-    if (error) {
-      toast.error(error.message);
-      return;
-    }
-    console.log(data);
-
-
-    if (files) {
-      for (let file of Array.from(files)) {
-        if (!validateFile(file)) continue;
-
-        const path = `tasks/${task.id}/${crypto.randomUUID()}`;
-
-        const { data: uploaded, error: uploadError } = await supabase.storage
-          .from("task-files")
-          .upload(path, file);
-
-        if (uploadError) {
-          console.log(uploadError);
-          continue;
-        }
-        console.log(uploaded);
-
-
-        const { data } = supabase.storage
-          .from("task-files")
-          .getPublicUrl(path);
-
-        await supabase.from("task_files").insert({
-          task_id: task.id,
-          file_url: data.publicUrl,
-          file_name: file.name,
-        });
+    try {
+      if (!title) {
+        toast.error("Title required");
+        return;
       }
+      console.log(assignedTo);
+
+      const { data, error } = await supabase.rpc("update_tasks", {
+        tid: task.id,
+        t: title,
+        d: description,
+        s: status,
+        a: assignedTo
+      });
+
+      if (error) {
+        toast.error(error.message);
+        return;
+      }
+      console.log(data);
+
+
+      if (files) {
+        for (let file of Array.from(files)) {
+          if (!validateFile(file)) continue;
+
+          const path = `tasks/${task.id}/${crypto.randomUUID()}`;
+
+          const { data: uploaded, error: uploadError } = await supabase.storage
+            .from("task-files")
+            .upload(path, file);
+
+          if (uploadError) {
+            console.log(uploadError);
+            continue;
+          }
+          console.log(uploaded);
+
+
+          const { data } = supabase.storage
+            .from("task-files")
+            .getPublicUrl(path);
+
+          await supabase.from("task_files").insert({
+            task_id: task.id,
+            file_url: data.publicUrl,
+            file_name: file.name,
+          });
+        }
+      }
+
+      toast.success("Task updated");
+      refresh();
+    } catch (error) {
+      console.log(error);
+
     }
 
-    toast.success("Task updated");
-    refresh();
   };
 
   return (
@@ -126,17 +130,17 @@ export default function UpdateTaskList({ task, users, refresh }: Props) {
             className="bg-[#EEF3F3] "
             onChange={(e) => setDescription(e.target.value)}
           />
-<div className="flex gap-1 items-center">
+          <div className="flex gap-1 items-center">
             <h1 className="w-32 text-[#1e4945">Status</h1>
-          <select
-            value={status}
-            onChange={(e) => setStatus(e.target.value)}
-            className="border p-2 rounded w-full bg-[#EEF3F3] "
-          >
-            <option value="To Do">To Do</option>
-            <option value="In Progress">In Progress</option>
-            <option value="Completed">Completed</option>
-          </select>
+            <select
+              value={status}
+              onChange={(e) => setStatus(e.target.value)}
+              className="border p-2 rounded w-full bg-[#EEF3F3] "
+            >
+              <option value="To Do">To Do</option>
+              <option value="In Progress">In Progress</option>
+              <option value="Completed">Completed</option>
+            </select>
           </div>
 
           <div className="flex gap-1 items-center">

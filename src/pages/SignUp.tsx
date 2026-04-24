@@ -138,14 +138,14 @@ import { Label } from "@/components/ui/label";
 
 export default function SignUp() {
   const navigate = useNavigate();
-
   const [name, setName] = useState("");
   const [employeeId, setEmployeeId] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
   const handleSignUp = async () => {
-    if (!name || !email || !password || !employeeId) {
+    try {
+          if (!name || !email || !password || !employeeId) {
       toast.error("All required fields must be filled");
       return;
     }
@@ -172,6 +172,11 @@ export default function SignUp() {
 
     toast.success("Account created!");
     navigate("/signin");
+    } catch (error) {
+      console.log(error);
+      
+    }
+
   };
 
   return (

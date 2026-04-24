@@ -8,17 +8,20 @@ import { Handshake } from "lucide-react";
 
 export default function Dashboard() {
   const navigate = useNavigate();
-
   const [user, setUser] = useState<any>({});
   const [team, setTeam] = useState<any[]>([]);
   const [tasks, setTasks] = useState<any[]>([]);
   const [filter, setFilter] = useState("all");
+    const [loading, setLoading] = useState(true);
 
   const [assignedTaskCount, setAssignedTaskCount] = useState(0);
   const [projectCount, setProjectCount] = useState(0);
 
   useEffect(() => {
     const fetchData = async () => {
+try {
+  
+       setLoading(true);
       const { data: { user } } = await supabase.auth.getUser();
       if (!user) return;
 
@@ -44,19 +47,22 @@ export default function Dashboard() {
         .order("created_at", { ascending: false });
 
       setTasks(taskData || []);
-
-
+     
       const assigned = taskData?.filter(
         (t) => t.assigned_to === user.id
       );
       setAssignedTaskCount(assigned?.length || 0);
-
 
       const { count } = await supabase
         .from("projects")
         .select("*", { count: "exact" });
 
       setProjectCount(count || 0);
+       setLoading(false);
+
+} catch (error) {
+  console.log(error);
+}
     };
 
     fetchData();
@@ -68,6 +74,15 @@ export default function Dashboard() {
     if (filter === "created") return t.created_by === user?.id;
     return true;
   });
+
+   if (loading) {
+    return (
+      <div className="flex justify-center items-center gap-1 min-h-screen">
+        <p className="text-teal-500 font-semibold text-lg">Fetching data...</p>
+        <div className="w-8 h-8 border-4 border-teal-500 border-t-transparent rounded-full animate-spin"></div>
+      </div>
+    );
+  }
 
   return (
     <div className="space-y-6">

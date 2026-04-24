@@ -23,13 +23,13 @@ export default function ProjectDetails() {
   const [project, setProject] = useState<any>(null);
   const [tasks, setTasks] = useState<any[]>([]);
   const [users, setUsers] = useState<any[]>([]);
-
   const [name, setName] = useState("");
   const [desc, setDesc] = useState("");
 
 
   const fetchProject = async () => {
-    const { data, error } = await supabase
+    try {
+      const { data, error } = await supabase
       .from("projects")
       .select("*")
       .eq("id", id)
@@ -43,11 +43,17 @@ export default function ProjectDetails() {
     setProject(data);
     setName(data?.name || "");
     setDesc(data?.description || "");
+
+    } catch (error) {
+      console.log(error);    
+    }
+    
   };
 
 
   const fetchTasks = async () => {
-    const { data, error } = await supabase
+    try {
+      const { data, error } = await supabase
       .from("tasks")
       .select(`
         *,
@@ -62,11 +68,18 @@ export default function ProjectDetails() {
     }
 
     setTasks(data || []);
+
+    } catch (error) {
+      console.log(error);
+      
+    }
+    
   };
 
 
   const fetchUsers = async () => {
-    const { data, error } = await supabase
+    try {
+       const { data, error } = await supabase
       .from("profiles")
       .select("id, name");
 
@@ -74,8 +87,11 @@ export default function ProjectDetails() {
       console.log(error);
       return;
     }
-
     setUsers(data || []);
+
+    } catch (error) {
+      console.log(error);    
+    }
   };
 
   useEffect(() => {
@@ -88,7 +104,8 @@ export default function ProjectDetails() {
 
 
   const handleUpdate = async () => {
-    const { error } = await supabase
+    try {
+      const { error } = await supabase
       .from("projects")
       .update({ name, description: desc })
       .eq("id", id);
@@ -98,6 +115,10 @@ export default function ProjectDetails() {
       return;
     }
 
+    } catch (error) {
+      console.log(error);    
+    }
+    
     fetchProject();
   };
 
