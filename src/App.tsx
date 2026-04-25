@@ -61,11 +61,6 @@ function App() {
         <Route path='/tasks' element={user ? <AssignedTasks/> : <Navigate to="/signIn" />}/>
         <Route path='/chat' element={user ? <ChatPage/> : <Navigate to="/signIn" />}/>
         <Route path='/projects/:id' element={user ? <ProjectDetails/> : <Navigate to="/signIn" />}/>
-        {/* <Route path='/cmpltd' index element={user ? <ListCompletedTasks/> : <Navigate to="/signIn" />}/>
-        <Route path='/update' index element={user ? <UpdateProfile/> : <Navigate to="/signIn" />}/>
-        <Route path='message/:id' index element={user ? <Messages/> : <Navigate to="/signIn" />}/>
-        <Route path='add' element={user ? <AddTask /> : <Navigate to="/signIn" />} />
-        <Route path='view/:id' element={user ? <ViewTask /> : <Navigate to="/signIn" />} /> */}
         <Route path='update-profile' element={user ? <UpdateProfile/> : <Navigate to="/signIn" />}/>
         </Route>
         <Route path='/cmplte-profile' element={user ? <CompleteProfile/> : <Navigate to="/signIn" />}/>

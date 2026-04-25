@@ -23,6 +23,7 @@ export default function MainLayout() {
   const [open, setOpen] = useState(false);
 
   const fetchUser = async () => {
+    
     const { data: { user } } = await supabase.auth.getUser();
     if (!user) return;
 
