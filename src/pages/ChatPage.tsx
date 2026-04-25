@@ -1,6 +1,5 @@
 import { useEffect, useState } from "react";
 import { supabase } from "@/lib/supabase";
-import { Card } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import avatar from "@/assets/avatar.jpg";

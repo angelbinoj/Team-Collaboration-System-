@@ -74,7 +74,7 @@ export default function TaskSection({
       toast.error(error.message);
       return;
     }
-    const { data: newTask } = await supabase
+    const { } = await supabase
       .from("tasks")
       .select("id")
       .order("created_at", { ascending: false });

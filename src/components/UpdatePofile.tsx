@@ -25,7 +25,7 @@ export function UpdateProfile() {
       try {
         const { data: { user } } = await supabase.auth.getUser();
 
-                const { data ,error} = await supabase
+                const { data } = await supabase
                     .from("profiles")
                     .select("*")
                     .eq("id", user?.id)

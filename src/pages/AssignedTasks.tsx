@@ -8,7 +8,6 @@ import { FiFileText } from "react-icons/fi";
 
 export default function AssignedTasks() {
   const [tasks, setTasks] = useState<any[]>([]);
-  const [userId, setUserId] = useState<string>("");
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -20,8 +19,6 @@ export default function AssignedTasks() {
         } = await supabase.auth.getUser();
 
         if (!user) return;
-
-        setUserId(user.id);
 
         const { data, error } = await supabase
           .from("tasks")
