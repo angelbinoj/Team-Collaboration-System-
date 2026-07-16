@@ -1,45 +1,44 @@
-CollabDesk – Team Collaboration System
+# CollabDesk - Team Collaboration System
 
-A collaborative web application that helps teams manage projects, assign tasks, communicate in real time, and track work progress. Built using React.js and Supabase with authentication, database, storage, and serverless functions.
+A team collaboration web application built with React.js and Supabase that allows users to manage projects, assign tasks, collaborate with teammates, and communicate through real-time chat.
 
-Live Demo
+## Live Demo
 🔗 https://team-collaboration-system-vtv8-gi4jkfvig-angel-binojs-projects.vercel.app/
 
-GitHub
+## GitHub
 🔗 https://github.com/angelbinoj/Team-Collaboration-System-
 
-Tech Stack
+## Tech Stack
+- React.js
+- JavaScript
+- Tailwind CSS
+- Supabase
+- React Router
+- React Hot Toast
 
-React.js
-JavaScript
-Tailwind CSS
-Supabase
-React Router
-React Hot Toast
+## Features
+- User Authentication
+- Dashboard with project & task overview
+- Create and manage projects
+- Assign tasks to team members
+- Real-time one-to-one chat
+- File/Image upload
+- Responsive UI
 
-Features
+## Supabase Features Used
+- Authentication
+- PostgreSQL Database
+- Realtime
+- Storage
+- Edge Functions
 
-User Authentication
-Dashboard with project and task overview
-Create and manage projects
-Assign and track tasks
-Real-time team chat
-File/Image upload using Supabase Storage
-Serverless functions for backend operations
-Responsive UI
+## Screenshots
 
-Supabase Features Used
+### Dashboard
+<img width="1842" height="878" alt="Screenshot 2026-07-16 213746" src="https://github.com/user-attachments/assets/42be1274-b636-4653-b06e-ddf0851871de" />
 
-Authentication
-PostgreSQL Database
-Realtime
-Storage
-Edge Functions
+### Projects
+<img width="1833" height="870" alt="Screenshot 2026-07-16 213801" src="https://github.com/user-attachments/assets/c807ad65-e65a-4b68-9c30-1bbdb507d9e2" />
 
-
-Screenshots
-
-<img width="1842" height="878" alt="Screenshot 2026-07-16 213746" src="https://github.com/user-attachments/assets/4f440315-9b5c-43c8-b067-760a57ca97c4" />
-<img width="1833" height="870" alt="Screenshot 2026-07-16 213801" src="https://github.com/user-attachments/assets/81d6b4f1-646e-4569-bcdd-2c29cf9a0b36" />
-<img width="1845" height="880" alt="Screenshot 2026-07-16 213822" src="https://github.com/user-attachments/assets/e2539887-e7d0-42e1-946c-c6448deb22a2" />
-
+### Team Chat
+<img width="1845" height="880" alt="Screenshot 2026-07-16 213822" src="https://github.com/user-attachments/assets/da278029-4b9a-41f3-a9f8-aaa9f1798428" />
