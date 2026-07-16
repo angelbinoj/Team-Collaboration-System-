@@ -1,73 +1,45 @@
-# React + TypeScript + Vite
+CollabDesk – Team Collaboration System
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+A collaborative web application that helps teams manage projects, assign tasks, communicate in real time, and track work progress. Built using React.js and Supabase with authentication, database, storage, and serverless functions.
 
-Currently, two official plugins are available:
+Live Demo
+🔗 https://team-collaboration-system-vtv8-gi4jkfvig-angel-binojs-projects.vercel.app/
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+GitHub
+🔗 https://github.com/angelbinoj/Team-Collaboration-System-
 
-## React Compiler
+Tech Stack
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+React.js
+JavaScript
+Tailwind CSS
+Supabase
+React Router
+React Hot Toast
 
-## Expanding the ESLint configuration
+Features
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+User Authentication
+Dashboard with project and task overview
+Create and manage projects
+Assign and track tasks
+Real-time team chat
+File/Image upload using Supabase Storage
+Serverless functions for backend operations
+Responsive UI
 
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
+Supabase Features Used
 
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
+Authentication
+PostgreSQL Database
+Realtime
+Storage
+Edge Functions
 
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-```
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+Screenshots
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
+<img width="1842" height="878" alt="Screenshot 2026-07-16 213746" src="https://github.com/user-attachments/assets/4f440315-9b5c-43c8-b067-760a57ca97c4" />
+<img width="1833" height="870" alt="Screenshot 2026-07-16 213801" src="https://github.com/user-attachments/assets/81d6b4f1-646e-4569-bcdd-2c29cf9a0b36" />
+<img width="1845" height="880" alt="Screenshot 2026-07-16 213822" src="https://github.com/user-attachments/assets/e2539887-e7d0-42e1-946c-c6448deb22a2" />
 
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-```
