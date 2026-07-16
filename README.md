@@ -3,7 +3,7 @@
 A team collaboration web application built with React.js and Supabase that allows users to manage projects, assign tasks, collaborate with teammates, and communicate through real-time chat.
 
 ## Live Demo
-🔗 https://team-collaboration-system-vtv8-gi4jkfvig-angel-binojs-projects.vercel.app/
+🔗 https://team-collaboration-system-vtv8.vercel.app/
 
 ## GitHub
 🔗 https://github.com/angelbinoj/Team-Collaboration-System-
